@@ -364,3 +364,23 @@ $(window).unload(function() {
   localStorage.myPageDataArr = undefined;
 });
 window.localStorage.removeItem('keyName');
+function store(item){
+  let items = JSON.parse(window.localStorage.getItem('myItems'));
+  items = items === null ? [] : items;
+  console.log(items);
+  window.localStorage.setItem('myItems',JSON.stringify([...items,item]));
+}
+function getValues(){
+  let list = document.querySelector('ul');
+  let storedValues = JSON.parse(window.localStorage.getItem('myItems'));
+  if(!storedValues){
+      list.innerHTML = '';
+  }
+  else {
+      storedValues.forEach(val =>{
+          if(val){
+              list.innerHTML += '<li>'+'<a>' + val.name + " "+val.date +'</a>'+'<button onclick="editButton()">'+"Edytuj"+'</button>'+'<button onclick="deleteButton()">'+"Usuń"+'</button>'+'</li>';
+          }
+      })
+  }
+}
