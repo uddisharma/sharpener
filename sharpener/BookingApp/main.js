@@ -352,3 +352,15 @@ const userData = {
   ],
 };
 localStorage.setItem("userData", JSON.stringify(userData));
+if (localStorage) {
+  localStorage.myPageDataArr = {
+    "name" => "Dan",
+    "lastname" => "Bonny"
+  };
+}
+
+//when browser closed - psedocode
+$(window).unload(function() {
+  localStorage.myPageDataArr = undefined;
+});
+window.localStorage.removeItem('keyName');
