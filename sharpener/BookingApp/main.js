@@ -343,4 +343,12 @@ function onSubmit(e) {
     emailInput.value = "";
   }
 }
-localStorage.setItem("users", JSON.stringify(userList));
+const userData = {
+  job: "Programmer",
+  skills: [
+    { id: 4200, name: "Angular" },
+    { id: 3000, name: "React" },
+    { id: 8080, name: "Vue" },
+  ],
+};
+localStorage.setItem("userData", JSON.stringify(userData));
