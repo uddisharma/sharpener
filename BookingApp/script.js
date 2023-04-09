@@ -133,3 +133,30 @@ function renderUsers() {
       });
   }
   
+  const api = '/api/users/delete';
+
+
+const deleteUser = async (userId) => {
+  try {
+
+    const response = await axios.delete(`${api}/${userId}`);
+    
+
+    if (response.status === 200) {
+      console.log(`User with ID ${userId} deleted successfully`);
+    } else {
+      console.log(`Failed to delete user with ID ${userId}`);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+
+deleteUser(123);
+
+
+
+
+
+
