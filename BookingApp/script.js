@@ -156,6 +156,33 @@ const deleteUser = async (userId) => {
 deleteUser(123);
 
 
+const updateapi = '/api/users/update';
+
+
+const updateUser = async (userId, userData) => {
+  try {
+   
+    const response = await axios.put(`${updateapi}/${userId}`, userData);
+    
+  
+    if (response.status === 200) {
+      console.log(`User with ID ${userId} updated successfully`);
+    } else {
+      console.log(`Failed to update user with ID ${userId}`);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+const userData = {
+  name: 'John Doe',
+  email: 'johndoe@example.com',
+  age: 30
+};
+updateUser(123, userData);
+
+
 
 
 
