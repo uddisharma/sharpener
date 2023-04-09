@@ -93,3 +93,43 @@ function editUser(userIndex) {
 
 readUsers();
 renderUsers();
+
+function renderUsers() {
+    const userList = document.getElementById('userList');
+    userList.innerHTML = '';
+  
+    axios.get('/users.json')
+      .then(response => {
+        const users = response.data;
+  
+        users.forEach((user, index) => {
+          const li = document.createElement('li');
+          const name = document.createElement('span');
+          const email = document.createElement('span');
+          const phone = document.createElement('span');
+          const editButton = document.createElement('button');
+          const deleteButton = document.createElement('button');
+  
+          name.innerText = user.name;
+          email.innerText = user.email;
+          phone.innerText = user.phone;
+  
+          editButton.innerText = 'Edit';
+          editButton.onclick = () => editUser(index);
+          deleteButton.innerText = 'Delete';
+          deleteButton.onclick = () => deleteUsers(index);
+  
+          li.appendChild(name);
+          li.appendChild(email);
+          li.appendChild(phone);
+          li.appendChild(editButton);
+          li.appendChild(deleteButton);
+  
+          userList.appendChild(li);
+        });
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
+  
