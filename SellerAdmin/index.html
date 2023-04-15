@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input type="number" id="myText" placeholder="selling price" value="" />
+    <input type="text" name="" id="product" placeholder="product name" />
+    <button id="add">Add</button>
+    <h3>price</h3>
+    <h4 id="pricerender"></h4>
+    <h3>product</h3>
+    <h4 id="productrender"></h4>
+  </body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
+
+  <script>
+    // import axios from "axios";
+   const addbtn= document.getElementById('add').addEventListener('click', add)
+    function add() {
+        console.log("added");
+      const price = document.getElementById("myText").value;
+      const product = document.getElementById("product").value;
+      let data='dsf'
+      function get(){
+        axios.get("http://localhost:3000/admin")
+        .then((res)=>{
+            console.log(res)
+            data= res
+        })
+        .catch((err)=>{
+            console.log(err)
+        })
+      }
+      get();
+      console.log(data)
+      axios
+        .post("http://localhost:3000/admin", {
+            price:price,
+            product:product
+        })
+        .then((res) => {
+          console.log("added");
+          get();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      console.log(price, product);
+    }
+  </script>
+</html>
