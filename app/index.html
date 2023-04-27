@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<style>
+    h1 {
+  text-align: center;
+  margin-top: 50px;
+}
+
+#expense-list {
+  margin-top: 50px;
+}
+
+</style>
+  </head>
+  <body>
+    <div class="container">
+      
+      <form>
+        <div class="form-group">
+          <label for="expense-name">Expense Name:</label>
+          <input type="text" class="form-control" id="expense-name">
+        </div>
+        <div class="form-group">
+          <label for="expense-amount">Expense Amount:</label>
+          <input type="number" class="form-control" id="expense-amount">
+        </div>
+        <button type="button" class="btn btn-primary" onclick="addExpense()">Add Expense</button>
+      </form>
+      <div id="expense-list"></div>
+    </div>
+    <script> 
+  // Get the expense list element
+const expenseList = document.getElementById('expense-list');
+
+// Retrieve existing expenses from local storage, or initialize an empty array
+let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
+
+// Render the existing expenses
+renderExpenses();
+
+function addExpense() {
+  // Get the expense name and amount from the input fields
+  const expenseName = document.getElementById('expense-name').value;
+  const expenseAmount = parseFloat(document.getElementById('expense-amount').value);
+
+  // Add the expense to the expenses array
+  expenses.push({ name: expenseName, amount: expenseAmount });
+
+  // Save the expenses to local storage
+  localStorage.setItem('expenses', JSON.stringify(expenses));
+
+  // Clear the input fields
+  document.getElementById('expense-name').value = '';
+  document.getElementById('expense-amount').value = '';
+
+  // Re-render the expenses
+  renderExpenses();
+}
+
+function renderExpenses() {
+  // Clear the expense list element
+  expenseList.innerHTML = '';
+
+  // Render each expense as a list item with edit and remove buttons
+  for (let i = 0; i < expenses.length; i++) {
+    const expense = expenses[i];
+
+    const li = document.createElement('li');
+    li.innerHTML = `${expense.name}: Rs${expense.amount.toFixed(2)}`;
+    
+    const editButton = document.createElement('button');
+    editButton.innerHTML = 'Edit';
+    editButton.classList.add('btn', 'btn-primary', 'btn-sm');
+    editButton.addEventListener('click', () => editExpense(i));
+    li.appendChild(editButton);
+
+    const removeButton = document.createElement('button');
+    removeButton.innerHTML = 'Remove';
+    removeButton.classList.add('btn', 'btn-danger', 'btn-sm', 'ml-1');
+    removeButton.addEventListener('click', () => removeExpense(i));
+    li.appendChild(removeButton);
+
+    expenseList.appendChild(li);
+  }
+}
+
+function editExpense(index) {
+  // Retrieve the expense to be edited
+  const expense = expenses[index];
+
+  // Prompt the user for the updated expense name and amount
+  const updatedName = prompt('Enter the updated expense name:', expense.name);
+  const updatedAmount = parseFloat(prompt('Enter the updated expense amount:', expense.amount));
+
+  // Update the expense in the array
+  expenses[index] = { name: updatedName, amount: updatedAmount };
+
+  // Save the expenses to local storage
+  localStorage.setItem('expenses', JSON.stringify(expenses));
+
+  // Re-render the expenses
+  renderExpenses();
+}
+
+function removeExpense(index) {
+  // Remove the expense from the array
+  expenses.splice(index, 1);
+
+  // Save the expenses to local storage
+  localStorage.setItem('expenses', JSON.stringify(expenses));
+
+  // Re-render the expenses
+  renderExpenses();
+}
+
+
+    </script>
+  </body>
+</html>
