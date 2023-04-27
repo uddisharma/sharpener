@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>document</title>
+  <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container mt-3">
+    
+    <form id="expense-form">
+      <div class="form-group">
+        <label for="expense-name">Name:</label>
+        <input type="text" id="expense-name" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label for="expense-amount">price:</label>
+        <input type="number" id="expense-amount" class="form-control" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Add Product</button>
+    </form>
+    <ul id="expense-list" class="list-group mt-3"></ul>
+  </div>
+  <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script >
+    // Get the expense form and list elements
+const expenseForm = document.getElementById('expense-form');
+const expenseList = document.getElementById('expense-list');
+
+// Add event listener for form submit
+expenseForm.addEventListener('submit', addExpense);
+
+// Retrieve existing expenses from the API
+fetch('http://localhost:3000/expenses')
+  .then(response => response.json())
+  .then(expenses => renderExpenses(expenses))
+  .catch(error => console.error(error));
+
+function addExpense(event) {
+  event.preventDefault();
+
+  // Get the expense name and amount from the input fields
+  const expenseName = document.getElementById('expense-name').value;
+  const expenseAmount = parseFloat(document.getElementById('expense-amount').value);
+
+  // POST the new expense to the API
+  fetch('http://localhost:3000/expenses', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name: expenseName, amount: expenseAmount })
+  })
+    .then(response => response.json())
+    .then(expense => {
+      // Clear the input fields
+      document.getElementById('expense-name').value = '';
+      document.getElementById('expense-amount').value = '';
+
+      // Render the updated list of expenses
+      renderExpenses();
+    })
+    .catch(error => console.error(error));
+}
+
+function renderExpenses(expenses) {
+  // Clear the expense list element
+  expenseList.innerHTML = '';
+
+  // Render each expense as
+// a list item
+expenses.forEach(expense => {
+// Create the list item element and its child elements
+const listItem = document.createElement('li');
+listItem.classList.add('list-group-item');
+const nameElement = document.createElement('span');
+nameElement.textContent = expense.name+" = ";
+const amountElement = document.createElement('span');
+amountElement.textContent = "Rs : "+expense.amount.toFixed(2)
+const editButton = document.createElement('button');
+editButton.classList.add('btn', 'btn-primary', 'mr-2');
+editButton.textContent = 'Edit';
+const deleteButton = document.createElement('button');
+deleteButton.classList.add('btn', 'btn-danger');
+deleteButton.textContent = 'Delete';
+// Add event listeners for edit and delete buttons
+editButton.addEventListener('click', () => editExpense(expense));
+deleteButton.addEventListener('click', () => deleteExpense(expense));
+
+// Append the child elements to the list item
+listItem.appendChild(nameElement);
+listItem.appendChild(amountElement);
+listItem.appendChild(editButton);
+listItem.appendChild(deleteButton);
+
+// Append the list item to the expense list element
+expenseList.appendChild(listItem);
+});
+}
+
+function editExpense(expense) {
+// Get the new name and amount from the user
+const newName = prompt('Enter the new name:', expense.name);
+const newAmount = parseFloat(prompt('Enter the new amount:', expense.amount));
+
+// PATCH the updated expense to the API
+fetch(`http://localhost:3000/expenses/${expense.id}`, {
+method: 'PATCH',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({ name: newName, amount: newAmount })
+})
+.then(response => response.json())
+.then(updatedExpense => {
+// Render the updated list of expenses
+renderExpenses();
+})
+.catch(error => console.error(error));
+}
+
+function deleteExpense(expense) {
+// DELETE the expense from the API
+fetch(`http://localhost:3000/expenses/${expense.id}`, {
+method: 'DELETE'
+})
+.then(response => {
+// Render the updated list of expenses
+renderExpenses();
+})
+.catch(error => console.error(error));
+}
+  </script>
+</body>
+</html>
