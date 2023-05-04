@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Seller Admin Page</title>
+  </head>
+  <body>
+    <h1>Seller Admin Page</h1>
+    <form>
+      <label for="product">Product Name:</label>
+      <input type="text" id="product" name="product" /><br /><br />
+      <label for="price">Product Price:</label>
+      <input
+        type="number"
+        id="price"
+        name="price"
+      /><br /><br />
+      <button
+        type="button"
+        onclick="addTask(document.getElementById('product').value,document.getElementById('price').value)"
+      >
+        Add Product
+      </button>
+    </form>
+    <br /><br />
+    <div style="display: none;" id="editContainer">
+        <form>
+            <input style="display: none;" type="text" id="id"/>
+            <label for="updatedproduct">Update Name:</label>
+            <input type="text" id="updatedproduct" name="updatedproduct" /><br /><br />
+            <label for="updatedprice">Update Price:</label>
+            <input
+              type="text"
+              id="updatedprice"
+              name="updatedprice"
+            /><br /><br />
+            <button
+              type="button"
+              onclick="updateTask(document.getElementById('id').value, document.getElementById('updatedproduct').value,document.getElementById('updatedprice').value)"
+            >
+              Update Product
+            </button>
+          </form>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th> Name</th>
+          <th>Price</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="taskTable"></tbody>
+    </table>
+    <script src="/newapp/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  </body>
+</html>

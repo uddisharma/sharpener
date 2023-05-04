@@ -1,0 +1,9 @@
+{
+  "shop": [
+    {
+      "product": "iphone",
+      "price": "50000",
+      "id": 1
+    }
+  ]
+}
