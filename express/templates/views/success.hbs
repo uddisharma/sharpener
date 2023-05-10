@@ -27,6 +27,15 @@
 </head>
 <body>
     {{>navbar}}
-    <h1>Your form has been subbmited</h1>
+   <form method="POST" action="/sendmessage">
+  <div class="mb-3">
+    <p>{{message}}</p>
+    <label for="exampleInputEmail1" class="form-label">Send Message</label>
+    <input type="text" name="message" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+  </div>
+  
+  <button type="submit" class="btn btn-primary">send</button>
+</form>
 </body>
 </html>
