@@ -8,6 +8,7 @@ const ChatRoute = require("./routers/chat.js");
 const staticpath = path.join(__dirname, "../public");
 const newpath = path.join(__dirname, "./templates/views");
 const partials = path.join(__dirname, "./templates/partials");
+const MyModel = require('./modals/product.js')
 const LocalStorage = require("node-localstorage").LocalStorage,
   localStorage = new LocalStorage("./scratch");
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -64,7 +65,11 @@ app.get("*", (req, res) => {
   res.render("404");
 });
 // app.use('/',ChatRoute )
-
+app.post('/items', (req, res) => {
+  const newItem = req.body;
+  const createdItem = MyModel.create(newItem);
+  res.status(201).json(createdItem);
+  });
 app.listen(3000, (req, res) => {
   console.log("Listening on port", 3000);
 });
