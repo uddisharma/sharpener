@@ -9,6 +9,7 @@ const staticpath = path.join(__dirname, "../public");
 const newpath = path.join(__dirname, "./templates/views");
 const partials = path.join(__dirname, "./templates/partials");
 const MyModel = require("./modals/product.js");
+const cartModel = require("./modals/product.js");
 const LocalStorage = require("node-localstorage").LocalStorage,
   localStorage = new LocalStorage("./scratch");
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -87,6 +88,29 @@ app.get("/items/:id", (req, res) => {
     res.send({ message: "no data found" });
   }
 });
+app.post('/cart/add', (req, res) => {
+  const { itemId, quantity } = req.body
+
+  if (!itemId || !quantity) {
+    res.status(400).send('Missing required parameters')
+  }
+
+  if (!cart[itemId]) {
+    cart[itemId] = quantity
+  } else {
+    cart[itemId] += quantity
+  }
+
+  res.send(`Item ${itemId} added to cart`)
+})
+app.get('/cart',(req,res)=>{
+  const data = cartModel.find()
+  if(data){
+    res.send({ data: data});
+  }else{
+    res.send({ message: "no data found" });
+  }
+})
 app.listen(3000, (req, res) => {
   console.log("Listening on port", 3000);
 });

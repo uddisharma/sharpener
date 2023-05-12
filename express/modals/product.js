@@ -1,8 +1,8 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
 // Define the path to your JSON data file
-const dataPath = path.join(__dirname, './data.json');
+const dataPath = path.join(__dirname, "./data.json");
 
 // Create a function to read data from the JSON file
 function readData() {
@@ -18,25 +18,25 @@ function writeData(data) {
 
 // Define your model
 const MyModel = {
-  getAll: function() {
+  getAll: function () {
     return readData();
   },
-  getById: function(id) {
+  getById: function (id) {
     const data = readData();
-    return data.find(item => item.id === id);
+    return data.find((item) => item.id === id);
   },
-  create: function(newItem) {
+  create: function (newItem) {
     const data = readData();
-    const ids = data.map(item => item.id);
+    const ids = data.map((item) => item.id);
     const newId = Math.max(...ids) + 1;
     const newItemWithId = { ...newItem, id: newId };
     data.push(newItemWithId);
     writeData(data);
     return newItemWithId;
   },
-  update: function(id, updatedItem) {
+  update: function (id, updatedItem) {
     const data = readData();
-    const itemIndex = data.findIndex(item => item.id === id);
+    const itemIndex = data.findIndex((item) => item.id === id);
     if (itemIndex >= 0) {
       const updatedItemWithId = { ...updatedItem, id };
       data[itemIndex] = updatedItemWithId;
@@ -46,16 +46,52 @@ const MyModel = {
       return null;
     }
   },
-  delete: function(id) {
+  delete: function (id) {
     const data = readData();
-    const filteredData = data.filter(item => item.id !== id);
+    const filteredData = data.filter((item) => item.id !== id);
     if (filteredData.length < data.length) {
       writeData(filteredData);
       return true;
     } else {
       return false;
     }
-  }
+  },
+};
+const cartModel = {
+  add: function (newItem) {
+    const data = readData();
+    const ids = data.map((item) => item.id);
+    const newId = Math.max(...ids) + 1;
+    const newItemWithId = { ...newItem, id: newId };
+    data.push(newItemWithId);
+    writeData(data);
+    return newItemWithId;
+  },
+  remove: function (id) {
+    const data = readData();
+    const filteredData = data.filter((item) => item.id !== id);
+    if (filteredData.length < data.length) {
+      writeData(filteredData);
+      return true;
+    } else {
+      return false;
+    }
+  },
+  updatequantity: function (id, updatedItem) {
+    const data = readData();
+    const itemIndex = data.findIndex((item) => item.id === id);
+    if (itemIndex >= 0) {
+      const updatedItemWithId = { ...updatedItem, id };
+      data[itemIndex] = updatedItemWithId;
+      writeData(data);
+      return updatedItemWithId;
+    } else {
+      return null;
+    }
+  },
+  getAll: function () {
+    return readData();
+  },
 };
 
-module.exports = MyModel;
+module.exports = { MyModel, cartModel };
