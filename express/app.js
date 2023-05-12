@@ -8,7 +8,7 @@ const ChatRoute = require("./routers/chat.js");
 const staticpath = path.join(__dirname, "../public");
 const newpath = path.join(__dirname, "./templates/views");
 const partials = path.join(__dirname, "./templates/partials");
-const MyModel = require('./modals/product.js')
+const MyModel = require("./modals/product.js");
 const LocalStorage = require("node-localstorage").LocalStorage,
   localStorage = new LocalStorage("./scratch");
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -65,11 +65,28 @@ app.get("*", (req, res) => {
   res.render("404");
 });
 // app.use('/',ChatRoute )
-app.post('/items', (req, res) => {
+app.post("/items", (req, res) => {
   const newItem = req.body;
   const createdItem = MyModel.create(newItem);
   res.status(201).json(createdItem);
-  });
+});
+app.get("/items", (req, res) => {
+  const data = MyModel.find();
+  if (data) {
+    res.send({ data: data });
+  } else {
+    res.send({ message: "no data found" });
+  }
+});
+app.get("/items/:id", (req, res) => {
+  const id = req.params.id;
+  const data = MyModel.findById({ id: id });
+  if (data) {
+    res.send({ data: data });
+  } else {
+    res.send({ message: "no data found" });
+  }
+});
 app.listen(3000, (req, res) => {
   console.log("Listening on port", 3000);
 });
