@@ -79,15 +79,8 @@ app.get("/items", (req, res) => {
     res.send({ message: "no data found" });
   }
 });
-app.get("/items", (req, res) => {
-  const { sort, limit } = req.params;
-  const data = MyModel.find().sort(sort).limit(limit).exec;
-  if (data) {
-    res.send({ data: data });
-  } else {
-    res.send({ message: "no data found" });
-  }
-});
+
+
 app.get("/items/:id", (req, res) => {
   const id = req.params.id;
   const data = MyModel.findById({ id: id });
@@ -97,7 +90,24 @@ app.get("/items/:id", (req, res) => {
     res.send({ message: "no data found" });
   }
 });
-
+app.get("/items", (req, res) => {
+  const { sort, limit } = req.params;
+  const data = MyModel.find().limit(limit).sort(sort).exec;
+  if (data) {
+    res.send({ data: data });
+  } else {
+    res.send({ message: "no data found" });
+  }
+});
+app.delete("/items/:id", (req,res)=>{
+  const id=req.params.id;
+    MyModel.findByIdAndDelete({ id: id})
+    .then((data)=>{
+      res.send("item is deleted successfully")
+    }).catch((err)=>{
+      res.send('something went wrong')
+    })
+})
 app.post("/cart/add", (req, res) => {
   const { itemId, quantity } = req.body;
 
