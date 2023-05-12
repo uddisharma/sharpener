@@ -79,6 +79,15 @@ app.get("/items", (req, res) => {
     res.send({ message: "no data found" });
   }
 });
+app.get("/items", (req, res) => {
+  const { sort, limit } = req.params;
+  const data = MyModel.find().sort(sort).limit(limit).exec;
+  if (data) {
+    res.send({ data: data });
+  } else {
+    res.send({ message: "no data found" });
+  }
+});
 app.get("/items/:id", (req, res) => {
   const id = req.params.id;
   const data = MyModel.findById({ id: id });
@@ -88,29 +97,30 @@ app.get("/items/:id", (req, res) => {
     res.send({ message: "no data found" });
   }
 });
-app.post('/cart/add', (req, res) => {
-  const { itemId, quantity } = req.body
+
+app.post("/cart/add", (req, res) => {
+  const { itemId, quantity } = req.body;
 
   if (!itemId || !quantity) {
-    res.status(400).send('Missing required parameters')
+    res.status(400).send("Missing required parameters");
   }
 
   if (!cart[itemId]) {
-    cart[itemId] = quantity
+    cart[itemId] = quantity;
   } else {
-    cart[itemId] += quantity
+    cart[itemId] += quantity;
   }
 
-  res.send(`Item ${itemId} added to cart`)
-})
-app.get('/cart',(req,res)=>{
-  const data = cartModel.find()
-  if(data){
-    res.send({ data: data});
-  }else{
+  res.send(`Item ${itemId} added to cart`);
+});
+app.get("/cart", (req, res) => {
+  const data = cartModel.find();
+  if (data) {
+    res.send({ data: data });
+  } else {
     res.send({ message: "no data found" });
   }
-})
+});
 app.listen(3000, (req, res) => {
   console.log("Listening on port", 3000);
 });
