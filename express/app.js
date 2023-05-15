@@ -12,7 +12,7 @@ const MyModel = require("./modals/product.js");
 const cartModel = require("./modals/product.js");
 const LocalStorage = require("node-localstorage").LocalStorage,
   localStorage = new LocalStorage("./scratch");
-  const db= require('./utils/database.js')
+  const sequelize= require('./utils/database.js')
   const Products = require('./controllers/products.js')
 app.use(bodyParser.urlencoded({ extended: false }));
 app.set("view engine", "hbs");
@@ -34,6 +34,13 @@ app.use(express.static(staticpath));
 // .catch((err)=>{
 //   console.log(err)
 // })
+sequelize.sync()
+.then(res=>{
+  console.log(res)
+})
+.catch(err=>{
+  console.log(err)
+})
 app.get("/", (req, res) => {
   fs.readFile("message.txt", "utf8", (err, data) => {
     if (err) {
