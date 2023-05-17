@@ -1,0 +1,15 @@
+<h1>Appointments</h1>
+<ul>
+  <% appointments.forEach(appointment => { %>
+  <li>
+    <%= appointment.name %> - <%= appointment.date %> <%= appointment.time %>
+  </li>
+  <% }) %>
+</ul>
+
+<form action="/appointments" method="POST">
+  <input type="text" name="name" placeholder="Name" required />
+  <input type="date" name="date" required />
+  <input type="time" name="time" required />
+  <button type="submit">Create Appointment</button>
+</form>

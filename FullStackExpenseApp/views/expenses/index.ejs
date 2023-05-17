@@ -1,0 +1,16 @@
+<!-- views/expenses/index.ejs -->
+<h1>Expenses</h1>
+<ul>
+  <% expenses.forEach(expense => { %>
+  <li>
+    <%= expense.name %> - $<%= expense.amount %> - <%= expense.date %> - <%=
+    expense.category %>
+  </li>
+  <% }) %>
+</ul>
+
+<a href="/expenses/create">Add New Expense</a>
+
+
+<!-- views/expenses/create.ejs -->
+
